@@ -61,10 +61,16 @@ spec:
                   fieldPath: metadata.name
             - name: CONFIG_PATH
               value: "/run/config/config.yaml"
+            {{- with .Values.controller.extraEnv }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
           volumeMounts:
           - mountPath: /run/config/
             name: config-volume
             readOnly: true
+            {{- with .Values.controller.extraVolumeMounts }}
+            {{- toYaml . | nindent 10 }}
+            {{- end }}
           resources:
             {{ toYaml .Values.resources | nindent 12 }}
       nodeSelector:
@@ -84,3 +90,6 @@ spec:
         - name: config-volume
           configMap:
             name: {{ include "db-operator.controller.name" . }}-config
+        {{- with .Values.controller.extraVolumes }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}

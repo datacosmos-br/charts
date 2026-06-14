@@ -21,6 +21,13 @@ crds:
 controller:
   logLevel: info
   extraArgs: []
+  # Datacosmos downstream additions (AGENTS.md §W-8.3 option 4): upstream db-operator
+  # hardcodes the controller pod spec with no injection point. These knobs let an umbrella
+  # mount a CA trust bundle + set env (e.g. PGSSLROOTCERT for postgres verify-ca) WITHOUT
+  # vendoring/forking the chart into cosmos-charts. Empty defaults = byte-identical to upstream.
+  extraEnv: []
+  extraVolumeMounts: []
+  extraVolumes: []
   service:
     annotations: {}
     type: ClusterIP
